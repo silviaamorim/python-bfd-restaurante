@@ -1,11 +1,22 @@
 # main.py
-from classes import Endereco, Cliente, Funcionario, Produto, Pedido
+from classes import Cliente, Funcionario, Produto, Pedido
 
-clientes = []
-funcionarios = []
-produtos = []
+clientes = [
+    Cliente ("Ana Silva", "123.456.789-00", "(11) 91234-5678", "1"),
+    Cliente ("Bruno Souza", "987.654.321-00", "(21) 99876-5432", "2"),
+]
+funcionarios = [
+    Funcionario ("Carlos Pereira", "111.222.333-44", "(31) 91111-2222", "Garçom"),
+    Funcionario("Diana Costa", "555.666.777-88", "(41) 93333-4444", "Cozinheira"),
+]
 pedidos = []
 
+# 🔹 Lista inicial de produtos
+produtos = [
+    Produto(1, "Risoto com Ababora","Suco Laranja", "Sorvete de Maracujá", 50.90),
+    Produto(2, "Strogonff Vegano", "Suco de Cajú", "Mousse de chocolate", 45.50),
+    Produto(3, "Moqueca de Palmito", "Suco de Acerola", "Torta vegana de Limão", 47.20),
+]
 
 def cadastrar_cliente():
     print("\n=== CADASTRO DE CLIENTE ===")
@@ -14,17 +25,8 @@ def cadastrar_cliente():
     telefone = input("Telefone: ")
     codigo = input("Código do cliente: ")
 
-    print("--- Endereço ---")
-    cep = input("CEP: ")
-    rua = input("Rua: ")
-    numero = input("Número: ")
-    bairro = input("Bairro: ")
-    cidade = input("Cidade: ")
-    estado = input("Estado: ")
-
-    endereco = Endereco(cep, rua, numero, bairro, cidade, estado)
-    cliente = Cliente(nome, cpf, telefone, endereco, codigo)
-    clientes.append(cliente)
+    cliente = Cliente(nome, cpf, telefone, codigo)
+    clientes.append(cliente) # adiciona o objeto cliente ao final da lista clientes
     print("Cliente cadastrado com sucesso!")
 
 
@@ -35,16 +37,7 @@ def cadastrar_funcionario():
     telefone = input("Telefone: ")
     cargo = input("Cargo: ")
 
-    print("--- Endereço ---")
-    cep = input("CEP: ")
-    rua = input("Rua: ")
-    numero = input("Número: ")
-    bairro = input("Bairro: ")
-    cidade = input("Cidade: ")
-    estado = input("Estado: ")
-
-    endereco = Endereco(cep, rua, numero, bairro, cidade, estado)
-    funcionario = Funcionario(nome, cpf, telefone, endereco, cargo)
+    funcionario = Funcionario(nome, cpf, telefone, cargo)
     funcionarios.append(funcionario)
     print("Funcionário cadastrado com sucesso!")
 
@@ -53,6 +46,8 @@ def cadastrar_produto():
     print("\n=== CADASTRO DE PRODUTO ===")
     codigo = input("Código do produto: ")
     descricao = input("Descrição: ")
+    suco = input("Suco: ")
+    sobremesa = input("Sobremesa: ")
     valor = float(input("Valor: "))
 
     produto = Produto(descricao, valor, codigo) 
@@ -68,12 +63,24 @@ def cadastrar_pedido():
     print("\n=== CADASTRO DE PEDIDO ===")
     codigo = input("Código do pedido: ")
 
-    # Escolher cliente
+       # Escolher cliente       
     print("\n-- Clientes disponíveis --")
-    for i, c in enumerate(clientes):
-        print(f"{i} - {c.nome} ({c.cpf})")
-    idx_cliente = int(input("Escolha o cliente (número): "))
-    cliente = clientes[idx_cliente]
+    for c in clientes:
+        print(f"Código: {c.codigo} | Nome: {c.nome} ({c.cpf})")
+
+    codigo_cliente = input("Digite o código do cliente: ")
+
+    # procurar o cliente com esse código
+    cliente = None
+    for c in clientes:
+        if str(c.codigo) == codigo_cliente:
+            cliente = c
+            break
+
+    if cliente is None:
+        print("⚠ Cliente não encontrado!")
+    else:
+        print(f"✅ Cliente selecionado: {cliente.nome}")
 
     # Escolher funcionário
     print("\n-- Funcionários disponíveis --")
@@ -85,8 +92,8 @@ def cadastrar_pedido():
     # Escolher produto
     print("\n-- Produtos disponíveis --")
     for i, p in enumerate(produtos):
-        #print(f"{i} - {p}")
-        print(f"{i} - {p.descricao} ({p.valor:.2f})")
+       
+        print(f"{i} - {p.descricao} + {p.suco} + {p.sobremesa} | Preço:R$ ({p.valor:.2f})")
     idx_produto = int(input("Escolha o produto (número): "))
     produto = produtos[idx_produto]
 
