@@ -29,7 +29,6 @@ def cadastrar_cliente():
     clientes.append(cliente) # adiciona o objeto cliente ao final da lista clientes
     print("Cliente cadastrado com sucesso!")
 
-
 def cadastrar_funcionario():
     print("\n=== CADASTRO DE FUNCIONÁRIO ===")
     nome = input("Nome: ")
@@ -89,6 +88,7 @@ def cadastrar_pedido():
     idx_func = int(input("Escolha o funcionário (número): "))
     funcionario = funcionarios[idx_func]
 
+
     # Escolher produto
     print("\n-- Produtos disponíveis --")
     for i, p in enumerate(produtos):
@@ -111,7 +111,27 @@ def listar_pedidos():
         print(p.apresentar())
         print("-" * 50)
 
+# 🔹  FUNÇÃO: Excluir pedido
+def excluir_pedido():
+    print("\n=== EXCLUSÃO DE PEDIDO ===")
+    if not pedidos:
+        print("Nenhum pedido cadastrado para excluir.")
+        return
 
+    listar_pedidos()
+    codigo = input("Digite o código do pedido que deseja excluir: ")
+
+    pedido_encontrado = None
+    for p in pedidos:
+        if str(p.codigo) == codigo:
+            pedido_encontrado = p
+            break
+
+    if pedido_encontrado:
+        pedidos.remove(pedido_encontrado)
+        print(f"✅ Pedido {codigo} excluído com sucesso!")
+    else:
+        print("⚠ Pedido não encontrado!")
 def menu():
     while True:
         print("\n===== MENU PRINCIPAL =====")
@@ -120,6 +140,7 @@ def menu():
         print("3 - Cadastrar Produto")
         print("4 - Cadastrar Pedido")
         print("5 - Listar Pedidos")
+        print("6 - Excluir Pedido")
         print("0 - Sair")
 
         opcao = input("Escolha uma opção: ")
@@ -134,12 +155,13 @@ def menu():
             cadastrar_pedido()
         elif opcao == "5":
             listar_pedidos()
+        elif opcao == "6":
+            excluir_pedido()
         elif opcao == "0":
             print("Saindo do sistema... 👋")
             break
         else:
             print("⚠️ Opção inválida!")
-
 
 if __name__ == "__main__":
     menu()
